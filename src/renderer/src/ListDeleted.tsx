@@ -12,9 +12,9 @@ export default function ListDeleted({theme,data,index,handleDeletePermanently,ha
       <div className={"p-1 cursor-pointer " + style(theme.listHeader)} onClick={() => {setExpanded(!expanded)}}>
         <p className="px-1">{data.item.name}</p>
       </div>
-      <div className='[&>div]:p-1' style={{height:expanded? 'auto':0}}>
+      <div className='[&>div]:p-1 [&>p]:border-b-[1px]' style={{height:expanded? 'auto':0}}>
         {data.item.elements.map((el,index) => {
-          return <p key={"del:" + index}>{el.name}</p>
+          return <p key={"del:" + index} className="px-2 py-1">{el.name}</p>
         })}
         <div className='grid grid-cols-2 !p-0 [&>button]:p-1'>
           <button className={'border-r-[1px] ' + style(theme.listAddElementButton)} onClick={() => {handleRecoverDeleted(index)}}>Recover <i className='bi-plus'></i></button>
