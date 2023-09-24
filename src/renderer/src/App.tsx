@@ -14,11 +14,9 @@ export default function App() {
   const [currentPage,setCurrentPage] = useState('lists') as ['lists' | 'archived' | 'trash', Dispatch<SetStateAction<'lists' | 'archived' | 'trash'>>];
   const [data,setData] = useState() as [Data, Dispatch<SetStateAction<Data>>];
   const theme = data? themes[data.theme] : themes['t1']
-  
-  // [x] load curnetTheme from memory
-  // [x] setstates with data from res
+
   useEffect(()=>{
-    window.electron.ipcRenderer.invoke('read').then((res: string)  => {
+    window.electron.ipcRenderer.invoke('read').then((res: string) => {
       const data = JSON.parse(res) as Data
       setData({todos:data.todos,deleted:data.deleted,archived:data.archived,theme: data.theme})
     }).then(()=>{ 
@@ -31,14 +29,6 @@ export default function App() {
       saveData();
     }
   },[data])
-
-  //[x] pass theme as object not key
-  //[x] trash bin
-  //[x] archive completed todo
-  //[x] collapse / expand lists
-  //[x] make nav a color theme element
-  //[]? add directional borders to style
-  //[] delete from deleted when time passes
 
   return (
     <div className={'h-screen overflow-hidden ' + style(theme.body)}>
@@ -102,6 +92,10 @@ export default function App() {
             <>
             <p className='m-2 text-sm'>Data in trash is automaticlly deleted in 7 days. You can manualy recover list or delete it pernamently.</p>
             {data?.deleted.map((el,index) => {
+              if(parseInt(el.deletedOn) + (86400000 * 7) < Date.now()){
+                handleDeletePermanently(index);
+                return
+              }
               return <ListDeleted key={'deleted' + index} index={index} theme={theme} data={el} handleDeletePermanently={handleDeletePermanently} handleRecoverDeleted={handleRecoverDeleted}/>
             })}
             </>
@@ -114,9 +108,13 @@ export default function App() {
       <button className={'absolute bottom-2 right-2 z-10 rounded-md text-2xl p-2 w-12 h-12 ' + style(theme.optionsButton)} onClick={()=>{setIsOptionsShown(!isOptionsShown)}}>
         <i className='bi-gear flex justify-center align-middle'></i>
       </button>
-      <Options theme={theme} setTheme={handleChangeTheme} handleDeleteData={handleDeleteData} isOptionsShown={isOptionsShown}/>
+      <Options handleImportData={handleImportData} theme={theme} setTheme={handleChangeTheme} handleDeleteData={handleDeleteData} isOptionsShown={isOptionsShown}/>
     </div>
   )
+
+  function handleImportData(data:Data){
+    setData(data)
+  }
 
   function handleChangeTheme(themeName:keyof typeof themes){
     const newData = copyData();
@@ -168,7 +166,6 @@ export default function App() {
   function handleAddElement(index: number){
     const newData = copyData();
     if (!newData) return
-    // [] add randomized text to new elements
     newData.todos[index].elements.push({name:'New task',done:false})
     setData(newData)
   }
@@ -274,3 +271,4 @@ type List_type = {
 
 export type {List_element}
 export type {List_type}
+export type {Data}

@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import fs from 'fs'
@@ -22,11 +22,8 @@ ipcMain.handle('read', async ()=>{
 ipcMain.handle('write',(ev,arg) => {
   fs.writeFile('./data.json',JSON.stringify(arg),()=>{})
 })
-// NOTE changes on main reqires restart
-// NOTE ./ is current project dir
 
 function createWindow(): void {
-  // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 480,
     height: 670,
@@ -42,6 +39,69 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+  })
+
+  ipcMain.handle('export',(ev,arg) => {
+    const options = {
+      title: "Save file",
+      buttonLabel : "Save",
+      filters :[
+          {name: 'txt', extensions: ['txt']},
+          {name: 'All Files', extensions: ['*']}
+      ],
+    };
+    dialog.showSaveDialog(mainWindow, options).then(({ filePath = './' }) => {
+      fs.readFile('./data.json',(err,data) => {
+        fs.writeFileSync(filePath, data, 'utf-8');
+      })
+    });
+  })
+  ipcMain.handle('import',(ev,arg) => {
+    const options = {
+      title: "Load data",
+      buttonLabel : "Load",
+
+      filters :[
+          {name: 'txt', extensions: ['txt']},
+          {name: 'All Files', extensions: ['*']}
+      ],
+    };
+    return new Promise((res,rej) => {dialog.showOpenDialog(mainWindow, options).then(({filePaths}) => {
+      filePaths.forEach(filePath => {
+        fs.readFile(filePath,(err,data) => {
+          try {
+            const parsedNewData = JSON.parse(data.toString("utf-8"))
+            fs.readFile('./data.json', "utf-8",(err, data) => {
+
+              const parsedData = JSON.parse(data);
+              parsedData.todos = [
+                ...parsedData.todos,
+                ...parsedNewData.todos
+              ]
+              parsedData.deleted = [
+                ...parsedData.deleted,
+                ...parsedNewData.deleted
+              ]
+              parsedData.archived = [
+                ...parsedData.archived,
+                ...parsedNewData.archived
+              ]
+              if (err) {
+                console.log(err)
+                rej(err)
+              } else {
+                fs.writeFile('./data.json',JSON.stringify(parsedData),() => {
+                  res(parsedData)
+                })
+              }
+            })
+            
+          } catch (error) {
+            rej("Wrong or corrupted file.")
+          }
+        })
+      })
+    })})
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -89,6 +149,3 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.

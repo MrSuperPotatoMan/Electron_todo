@@ -2,8 +2,9 @@ import style from "./themes/Style"
 import themes, { Theme } from "./themes/colorThemes"
 import { useState } from "react"
 import { themesInfo } from "./themes/colorThemes"
+import { Data } from "./App"
 
-export default function Options({isOptionsShown,handleDeleteData,setTheme,theme}:Args){
+export default function Options({isOptionsShown,handleDeleteData,setTheme,theme,handleImportData}:Args){
 
     const [colorsExpanded, setColorsExpanded] = useState(false)
 
@@ -16,8 +17,8 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme}
         <hr className="border-black w-full"/>
         <Header>Import / export</Header>
         <div className="grid grid-cols-2 w-full gap-1">
-            <button className="bg-gray-200 p-1 rounded-sm">Import <i className="bi-download"></i></button>
-            <button className="bg-gray-200 p-1 rounded-sm">Export <i className="bi-upload"></i></button>
+            <button className="bg-gray-200 p-1 rounded-sm" onClick={handleImport}>Import <i className="bi-download"></i></button>
+            <button className="bg-gray-200 p-1 rounded-sm" onClick={() => {window.electron.ipcRenderer.invoke('export')}}>Export <i className="bi-upload"></i></button>
         </div>
         {/* <div className="relative w-full">
             <div className="rounded-md overflow-hidden border border-black">
@@ -57,6 +58,12 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme}
     </div>
     )
 
+    function handleImport(){
+        window.electron.ipcRenderer.invoke('import')
+            .then(handleImportData)
+            .catch(err => alert(err))
+    }
+
     function handleExpand(){
         setColorsExpanded(!colorsExpanded)
     }
@@ -82,7 +89,8 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme}
 
 type Args = {
     isOptionsShown:boolean,
-    handleDeleteData:()=>void,
-    setTheme:(themeName:keyof Theme)=>void,
-    theme: Theme
+    handleDeleteData: ()=>void,
+    setTheme: (themeName:keyof Theme)=>void,
+    theme: Theme,
+    handleImportData: (data:Data) => void
 }
