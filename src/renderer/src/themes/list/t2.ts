@@ -1,61 +1,142 @@
 import { Theme } from "../colorThemes"
 
-// const b1 = '#daf5f0'
-// const b2 = '#a7dbd8'
-// const b3 = '#87ceeb'
-// const b4 = '#69d2e7'
-// const g1 = '#b5d2ad'
-// const g2 = '#bafca2'
-// const g3 = '#90ee90'
-// const g4 = '#7fbc8c'
-// const y1 = '#fdfd9'
-// const y2 = '#ffdb58'
-// const y3 = '#f4d738'
-// const y4 = '#e3a018'
-// const r1 = '#f8d6b3'
-// const r2 = '#ffa07a'
-// const r3 = '#ff7a5c'
-// const r4 = '#ff6b6b'
-const p1 = '#fcdfff'
-// const p2 = '#ffc0cb'
-const p3 = '#ffb2ef'
-const p4 = '#ff69b4'
-// const v1 = '#e3dff2'
-// const v2 = '#c4a1ff'
-// const v3 = '#a388ee'
-// const v4 = '#9723c9'
-const white = '#ffffff'
-const black = '#000000'
+const cPrimary = '#007bff'
+const cSecondary = '#6c757d'
+// const cInfo = '#17a2b8'
+const cSuccess = '#28a745'
+// const cWarning = '#ffc107'
+const cDanger = '#dc3545'
+const cDark = '#343a40'
+const cLight = '#f8f9fa'
+const cWhite = '#ffffff'
 
-const t2:Theme = {
-    body:{
-        background: p1
+const t3:Theme = {
+    body: {
+        background: cLight,
     },
     list:{
-        background: white,
-        border: 'solid 2px black'
+        background: cWhite,
+        boxShadow: "0 2px 4px -2px " + cSecondary
     },
     listHeader:{
-        background: p4,
-        boxShadow: '0 0 0 2px ' + black,
+        background: cSuccess,
+        color: cWhite
     },
-    newListButton:{
-        background: p1,
-        border: 'solid 2px black'
-    },
-    optionsButton:{
-        background: p1,
-        border: 'solid 2px black'
-    },
-    listElementCheckoxChecked:{
-        color: p4
+    listElement:{
+        color: cDanger
     },
     listElementRenameTag:{
         checked:{
-            color: p3
+            color: cSecondary
+        },
+        apply:{
+            background: cWhite,
+            color: cSuccess,
+            transition:"0.1s",
+            ":hover":{
+                boxShadow: "0 0 0 1px " + cSuccess
+            }
+        },
+        discard:{
+            color: cDanger,
+            background: cWhite,
+            transition:"0.1s",
+            ":hover":{
+                boxShadow: "0 0 0 1px " + cDanger
+            }
+        },
+        pen:{
+            ":hover":{
+                boxShadow: "0 0 6px -1px " + cSecondary
+            }
+        },
+        input:{
+            boxShadow: "0 0 0 1px black"
         }
     },
-    icon: 'white , ' + p1,
-    name: 't2'
+    listElementCheckoxEmpty:{
+    },
+    listElementCheckoxChecked:{
+        color: cSecondary
+    },
+    listElementDeleteButton:{
+        // transition: '0.1s',
+        ":hover":{
+            background: cDanger,
+            color: cWhite
+        }
+    },
+    newListButton:{
+        background: cSuccess,
+        boxShadow: "0 0 10px -2px " + cLight,
+        transition: '0.2s',
+        color: cWhite,
+        ":hover":{
+            background: cLight,
+            color: cSuccess
+        }
+    },
+    optionsButton:{
+        background: cSuccess,
+        boxShadow: "0 0 10px -2px " + cLight,
+        color: cWhite,
+        transition: '0.2s',
+        ":hover":{
+            background: cLight,
+            color: cSuccess
+        }
+    },
+    listHeaderRenameTag:{
+        input:{
+            background: cLight,
+            color: cDark
+        },
+        apply:{
+            color: cLight,
+            transition:"0.1s",
+            ":hover":{
+                boxShadow: "0 0 0 2px " + cSuccess
+            }
+        },
+        discard:{
+            color: cLight
+        },
+        pen:{
+            transition:'0.1s',
+            ":hover":{
+                boxShadow:"0 0 4px 1px white"
+            },
+        },
+    },
+    optnionsPanel:{
+        background: cLight
+    },
+    listAddElementButton:{
+        transition: '0.1s',
+        ":hover":{
+            color: cSuccess
+        }
+    },
+    listDeleteListButton:{
+        transition: '0.1s',
+        ":hover":{
+            color: cDanger
+        }
+    },
+    moveToAchiveButton: {
+        background: cSuccess,
+        color: cWhite,
+    },
+    icon: `${cWhite} 48%, ${cSuccess} 52%`,
+    name: 't3',
+    navButton: {
+        ":hover":{
+            background: cSuccess + '11'
+        }
+    },
+    navButtonActive: {
+        background: cSuccess + '22'
+    }
 }
-export default t2
+
+export default t3

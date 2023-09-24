@@ -1,13 +1,11 @@
 import t1 from "./list/t1"
 import t2 from "./list/t2"
-import t3 from "./list/t3"
 
 const themes:{
     [index: string]: Theme,
 } = {
     t1,
-    t2,
-    t3,
+    t2
 }
 
 export default themes
