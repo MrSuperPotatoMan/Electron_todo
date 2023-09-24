@@ -35,9 +35,6 @@ export default function RenameTag({defaultText,changeCb,theme,checked}:Args){
             </>
     )
 
-    // [x] handle discard
-    // [x] handle change
-    // [x] change bg 
     function handleClick(ev:MouseEvent){
         ev.stopPropagation()
         setIsChangeMode(true)

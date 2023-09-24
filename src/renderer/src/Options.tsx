@@ -1,5 +1,5 @@
 import style from "./themes/Style"
-import themes, { Theme } from "./themes/colorThemes"
+import { Theme } from "./themes/colorThemes"
 import { useState } from "react"
 import { themesInfo } from "./themes/colorThemes"
 import { Data } from "./App"
@@ -20,22 +20,6 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme,
             <button className="bg-gray-200 p-1 rounded-sm" onClick={handleImport}>Import <i className="bi-download"></i></button>
             <button className="bg-gray-200 p-1 rounded-sm" onClick={() => {window.electron.ipcRenderer.invoke('export')}}>Export <i className="bi-upload"></i></button>
         </div>
-        {/* <div className="relative w-full">
-            <div className="rounded-md overflow-hidden border border-black">
-                <A clickHandler={handleExpand} text="Color theme" iconColor={theme.icon}/>
-            </div>
-            <div
-                className="absolute top-10 bg-white rounded-md overflow-hidden flex flex-col w-full box-border border border-black"
-                style={{display:expanded?'block':'none'}}
-            >
-                {
-                    themesInfo.map((el, index) => {
-                        return <A key={"theme:"+ index} clickHandler={()=>{setTheme(el.name)}} iconColor={el.icon} text={el.name} />
-                    })
-                }
-            </div>
-            <button onClick={handleDeleteData}>Delete data</button>
-        </div> */}
         <Header>Color theme</Header>
         <div className="py-2 px-3 bg-gray-200 rounded-sm w-full flex flex-row justify-between cursor-pointer relative" onClick={handleExpand}>
             <p>
@@ -49,7 +33,7 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme,
             <div className="absolute bg-gray-200 w-full left-0 top-10 overflow-hidden" style={{height:colorsExpanded?'auto':0}}>
                 {
                     themesInfo.map((el, index) => {
-                        return <A key={"theme:"+ index} clickHandler={()=>{setTheme(el.name)}} iconColor={el.icon} text={el.name} />
+                        return <ThemeListPosition key={"theme:"+ index} clickHandler={()=>{setTheme(el.name)}} iconColor={el.icon} text={el.name} />
                     })
                 }
             </div>
@@ -68,7 +52,7 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme,
         setColorsExpanded(!colorsExpanded)
     }
 
-    function A({clickHandler,text,iconColor}:{clickHandler: () => void, text: string,iconColor:string}){
+    function ThemeListPosition({clickHandler,text,iconColor}:{clickHandler: () => void, text: string,iconColor:string}){
         return (
             <button onClick={clickHandler} className="w-full flex flex-row justify-between p-2 hover:bg-gray-300">
                 <p>{text}</p>

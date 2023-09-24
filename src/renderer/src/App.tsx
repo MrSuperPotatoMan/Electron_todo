@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import List from './List';
@@ -11,8 +11,8 @@ import ListArchived from './ListArchived';
 export default function App() {
   const [isDataLoaded,setIsDataLoaded] = useState(false);
   const [isOptionsShown,setIsOptionsShown] = useState(false);
-  const [currentPage,setCurrentPage] = useState('lists') as ['lists' | 'archived' | 'trash', Dispatch<SetStateAction<'lists' | 'archived' | 'trash'>>];
-  const [data,setData] = useState() as [Data, Dispatch<SetStateAction<Data>>];
+  const [currentPage,setCurrentPage] = useState<'lists' | 'archived' | 'trash'>('lists')
+  const [data,setData] = useState<Data>()
   const theme = data? themes[data.theme] : themes['t1']
 
   useEffect(()=>{
@@ -178,7 +178,7 @@ export default function App() {
   }
   
   function handleDeleteData(){
-    setData({todos:[] as List_type[],deleted:[] as {item: List_type,deletedOn: string}[],archived:[] as List_type[],theme: data.theme})
+    setData({todos:[] as List_type[],deleted:[] as {item: List_type,deletedOn: string}[],archived:[] as List_type[],theme: data?.theme || "t1"})
   }
 
   function handleRecoverDeleted(index: number){
