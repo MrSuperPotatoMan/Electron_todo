@@ -7,6 +7,7 @@ import { Data } from "./App"
 export default function Options({isOptionsShown,handleDeleteData,setTheme,theme,handleImportData}:Args){
 
     const [colorsExpanded, setColorsExpanded] = useState(false)
+    const [deleteDataPopupExpanded,setDeleteDataPopupExpanded] = useState(false)
 
     return (
     <div
@@ -38,7 +39,16 @@ export default function Options({isOptionsShown,handleDeleteData,setTheme,theme,
                 }
             </div>
         </div>
-        <button>Delete all data</button>
+        <button className="text-red-500 text-center w-full hover:bg-red-500 hover:text-white rounded-sm py-1" onClick={() => {setDeleteDataPopupExpanded(true)}}>Delete all data</button>
+        <div className="bg-black bg-opacity-30 absolute inset-0 flex justify-center items-center" style={{display:deleteDataPopupExpanded?"grid":"none"}}>
+                <div className="rounded-sm bg-white flex flex-col">
+                    <p className="mt-2 text-center">Are you sure?</p>
+                    <div className="grid grid-cols-2">
+                        <button className="hover:bg-gray-200 py-2 px-8" onClick={() => {setDeleteDataPopupExpanded(false);handleDeleteData()}}>Yes</button>
+                        <button className="hover:bg-gray-200 py-2 px-8" onClick={() => {setDeleteDataPopupExpanded(false)}}>No</button>
+                    </div>
+                </div>
+        </div>
     </div>
     )
 
