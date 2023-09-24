@@ -1,6 +1,5 @@
 import { Theme } from "../colorThemes"
 
-const cPrimary = '#007bff'
 const cSecondary = '#6c757d'
 // const cInfo = '#17a2b8'
 const cSuccess = '#28a745'

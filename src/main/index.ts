@@ -19,7 +19,7 @@ ipcMain.handle('read', async ()=>{
   }
 })
 
-ipcMain.handle('write',(ev,arg) => {
+ipcMain.handle('write',({},arg) => {
   fs.writeFile('./data.json',JSON.stringify(arg),()=>{})
 })
 
@@ -52,6 +52,7 @@ function createWindow(): void {
     };
     dialog.showSaveDialog(mainWindow, options).then(({ filePath = './' }) => {
       fs.readFile('./data.json',(err,data) => {
+        if(err) return
         fs.writeFileSync(filePath, data, 'utf-8');
       })
     });
@@ -70,6 +71,7 @@ function createWindow(): void {
       filePaths.forEach(filePath => {
         fs.readFile(filePath,(err,data) => {
           try {
+            if(err) throw new Error()
             const parsedNewData = JSON.parse(data.toString("utf-8"))
             fs.readFile('./data.json', "utf-8",(err, data) => {
 
